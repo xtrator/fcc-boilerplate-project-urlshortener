@@ -57,9 +57,9 @@ app.get("/api/shorturl/:short_url", function (req, res) {
   URL.findOne({ short_url: req.params.short_url }, function (err, data) {
     if (data) {
       res.redirect(data.original_url);
+    } else {
+      res.json({ error: "something wrong with your url" });
     }
-
-    res.json({ error: "something wrong with your url" });
   });
 });
 
