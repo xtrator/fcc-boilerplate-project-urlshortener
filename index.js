@@ -48,7 +48,9 @@ app.get("/api/hello", function (req, res) {
 // WORKING HERE !!!!
 app.post(
   "/api/shorturl",
-  check("url").isURL({ require_protocol: true, require_host: true }),
+  check("url").matches(
+    /^((http|https):\/\/.)[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/
+  ),
   async function (req, res) {
     try {
       validationResult(req).throw();
