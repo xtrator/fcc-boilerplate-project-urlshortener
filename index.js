@@ -46,18 +46,25 @@ app.get("/api/hello", function (req, res) {
 });
 
 // WORKING HERE !!!!
-app.post("/api/shorturl", check("url").isURL(), async function (req, res) {
-  try {
-    validationResult(req).throw();
-    let URLcount = await URL.countDocuments({});
-    let url = new URL({ original_url: req.body.url, short_url: URLcount });
-    url.save(function (err, data) {
-      res.json({ original_url: data.original_url, short_url: data.short_url });
-    });
-  } catch (error) {
-    res.status(400).json({ error: "invalid url" });
+app.post(
+  "/api/shorturl",
+  check("url").isURL({ require_protocol: true, require_host: true }),
+  async function (req, res) {
+    try {
+      validationResult(req).throw();
+      let URLcount = await URL.countDocuments({});
+      let url = new URL({ original_url: req.body.url, short_url: URLcount });
+      url.save(function (err, data) {
+        res.json({
+          original_url: data.original_url,
+          short_url: data.short_url,
+        });
+      });
+    } catch (error) {
+      res.status(400).json({ error: "invalid url" });
+    }
   }
-});
+);
 
 app.get("/api/shorturl/:short_url", function (req, res) {
   URL.findOne({ short_url: req.params.short_url }, function (err, data) {
