@@ -53,6 +53,16 @@ app.post("/api/shorturl", async function (req, res) {
   });
 });
 
+app.get("/api/shorturl/:short_url", function (req, res) {
+  URL.findOne({ short_url: req.params.short_url }, function (err, data) {
+    if (data) {
+      res.redirect(data.original_url);
+    }
+
+    res.json({ error: "something wrong with your url" });
+  });
+});
+
 app.listen(port, function () {
   console.log(`Listening on port ${port}`);
 });
