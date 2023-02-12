@@ -15,6 +15,7 @@ const connectionParams = {
   // useCreateIndex: true,
 };
 
+// adding env variables to production
 mongoose
   .connect(process.env.MONGO_URI, connectionParams)
   .then(() => {
