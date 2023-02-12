@@ -43,10 +43,13 @@ app.get("/api/hello", function (req, res) {
   res.json({ greeting: "hello API" });
 });
 
-app.post("/api/shorturl", function (req, res) {
-  let original_url = req.body.url;
-  let short_url = "ba";
-  res.json({ original_url, short_url });
+// WORKING HERE !!!!
+app.post("/api/shorturl", async function (req, res) {
+  let URLcount = await URL.countDocuments({});
+  let url = new URL({ original_url: req.body.url, short_url: URLcount });
+  url.save(function (err, data) {
+    res.json({ original_url: data.original_url, short_url: data.short_url });
+  });
 });
 
 app.listen(port, function () {
